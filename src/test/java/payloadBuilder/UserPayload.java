@@ -19,4 +19,19 @@ public class UserPayload {
         registerUser.put("groupId", groupId);
         return registerUser;
     }
+    public static JSONObject createTestimonialPayload(String title, String content, int rating, boolean isPublic){
+        JSONObject testimonial = new JSONObject();
+        testimonial.put("title", title);
+        testimonial.put("content", content);
+        testimonial.put("rating", rating);
+        testimonial.put("isPublic", isPublic);
+        return testimonial;
+    }
+    public static JSONObject updateTestimonialPayload(String title, String content, int rating){
+        JSONObject testimonial = new JSONObject();
+        testimonial.put("title", title);
+        testimonial.put("content", content);
+        testimonial.put("rating", rating);
+        return testimonial;
+    }
 }
