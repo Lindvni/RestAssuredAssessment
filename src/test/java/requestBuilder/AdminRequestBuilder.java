@@ -15,7 +15,7 @@ public class AdminRequestBuilder {
 
         return given()
                 .baseUri(BASE_URL)
-                .pathParams("userID", UserRequestBuilder.registeredUserId)
+                //.pathParams("userID", UserRequestBuilder.registeredUserId)
                 .header("Authorization","Bearer "+adminToken)
                 .when()
                 .put()
