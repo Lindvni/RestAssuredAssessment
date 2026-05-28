@@ -1,4 +1,4 @@
-package basicTests;
+package BasicTests;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -16,11 +16,12 @@ public class userRegistrationTests {
     public void userRegistrationTest() {
 
         String registerUserPath = "/register";
+        String randomEmail = "Group2+" + System.currentTimeMillis() + "@gmail.com";
 
         String userRegistrationPayload = "{\n" +
                 "  \"firstName\": \"Bennitto\",\n" +
                 "  \"lastName\": \"Fuze\",\n" +
-                "  \"email\": \"Group289@gmail.com\",\n" +
+                "  \"email\": \"" + randomEmail + "\",\n" +
                 "  \"password\": \"Group2@2026\",\n" +
                 "  \"confirmPassword\": \"Group2@2026\",\n" +
                 "  \"groupId\": \"5328c91e-fc40-11f0-8e00-5000e6331276\"\n" +
