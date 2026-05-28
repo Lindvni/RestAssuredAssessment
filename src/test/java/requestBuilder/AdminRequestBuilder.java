@@ -11,12 +11,15 @@ public class AdminRequestBuilder {
     public static String adminToken;
 
     public static Response approveUser(){
-        String apiPath = "/admin/users//{userID}/approve";
+
+        String apiPath = "/APIDEV/admin/users/{userID}/approve";
 
         return given()
                 .baseUri(BASE_URL)
-                //.pathParams("userID", UserRequestBuilder.registeredUserId)
+                .basePath(apiPath)
+                .pathParam("userID", UserRequestBuilder.registeredUserId)
                 .header("Authorization","Bearer "+adminToken)
+                .header("Content-Type","application/json")
                 .when()
                 .put()
                 .then()
@@ -24,7 +27,7 @@ public class AdminRequestBuilder {
     }
     public static Response adminLogin(String email, String password){
 
-        Response response =UserRequestBuilder.loginUser(email,password);
+        Response response =UserRequestBuilder.loginUser(email.trim(),password.trim());
         adminToken = response.jsonPath().getString("data.token");
         return response;
     }
