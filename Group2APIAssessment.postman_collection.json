@@ -1,0 +1,495 @@
+{
+  "info": {
+    "_postman_id": "7a046b88-cb8c-4dca-946a-fda957f1a22b",
+    "name": "Group2APIAssessment Copy 2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19198354"
+  },
+  "item": [
+    {
+      "name": "userRegistration",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.data && res.data.Id) {",
+              "    pm.collectionVariables.set('userID', res.data.Id);",
+              "    console.log('✅ userID saved:', res.data.Id);",
+              "} else if (res.id) {",
+              "    pm.collectionVariables.set('userID', res.id);",
+              "    console.log('✅ userID saved:', res.id);",
+              "} else {",
+              "    console.error('❌ Failed to extract userID');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Lindvni\",\n  \"lastName\": \"Mapholoba\",\n  \"email\": \"Group2+{{$randomEmail}}\",\n  \"password\": \"@Pass123\",\n  \"confirmPassword\": \"@Pass123\",\n  \"groupId\": \"c1ce77c4-bd1a-42ae-901f-fc3e534c55b8\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/register",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AdminLogin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const res = pm.response.json();",
+              "const token = res.token || res.accessToken || (res.data && (res.data.token || res.data.accessToken));",
+              "if (token) {",
+              "    pm.collectionVariables.set('adminToken', token);",
+              "    console.log('✅ adminToken saved');",
+              "} else {",
+              "    console.error('❌ Failed to extract token');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"@12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/login",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ApproveUser",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          }
+        ],
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/admin/users/{{userID}}/approve",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "admin",
+            "users",
+            "{{userID}}",
+            "approve"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CreateTestimonial",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.id) {",
+              "    pm.collectionVariables.set('testimonialID', res.id);",
+              "    console.log('✅ testimonialID saved:', res.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Cucumber 19 May\",\n  \"content\": \"Behavior Driven\",\n  \"rating\": 5,\n  \"isPublic\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/testimonials",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "testimonials"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Testimonial",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Testimonial updated', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Title2\",\n  \"content\": \"Updated testimonial content\",\n  \"rating\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/testimonials/{{testimonialID}}",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "testimonials",
+            "{{testimonialID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteTestimonial",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Testimonial deleted', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          }
+        ],
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/testimonials/{{testimonialID}}",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "testimonials",
+            "{{testimonialID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetCourse",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Courses retrieved', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          }
+        ],
+        "url": {
+          "raw": "https://www.ndosiautomation.co.za/APIDEV/courses?category=automation&level=beginner",
+          "protocol": "https",
+          "host": [
+            "www",
+            "ndosiautomation",
+            "co",
+            "za"
+          ],
+          "path": [
+            "APIDEV",
+            "courses"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "automation"
+            },
+            {
+              "key": "level",
+              "value": "beginner"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{adminToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          "// Skip auto-login for login & registration",
+          "if (['AdminLogin', 'userRegistration'].includes(pm.info.requestName)) return;",
+          "",
+          "const token = pm.collectionVariables.get('adminToken');",
+          "if (token) {",
+          "    try {",
+          "        const payload = JSON.parse(atob(token.split('.')[1]));",
+          "        const now = Math.floor(Date.now() / 1000);",
+          "        if (payload.exp > now + 60) return; // Valid with 60s buffer",
+          "    } catch(e) {}",
+          "}",
+          "",
+          "// Fetch new token",
+          "pm.sendRequest({",
+          "    url: 'https://www.ndosiautomation.co.za/APIDEV/login',",
+          "    method: 'POST',",
+          "    header: { 'Content-Type': 'application/json', 'accept': 'application/json' },",
+          "    body: { mode: 'raw', raw: JSON.stringify({ email: 'admin@gmail.com', password: '@12345678' }) }",
+          "}, (err, res) => {",
+          "    if (err) return console.error('❌ Auto-login failed:', err);",
+          "    const data = res.json();",
+          "    const newToken = data.token || data.accessToken || (data.data && data.data.token);",
+          "    if (newToken) {",
+          "        pm.collectionVariables.set('adminToken', newToken);",
+          "        console.log('🔄 Token refreshed automatically');",
+          "    } else {",
+          "        console.error('❌ Could not extract token from login response');",
+          "    }",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "userID",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "testimonialID",
+      "value": ""
+    }
+  ]
+}
