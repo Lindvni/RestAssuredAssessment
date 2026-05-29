@@ -25,7 +25,8 @@ public class createTestimonialBuilder {
                 .then()
                 .extract().response();
 
-        testimonialId = response.jsonPath().getString("id");
+        testimonialId = response.jsonPath().getString("data.Id");
+        System.out.println("Testimonial ID: " + testimonialId);
         return response;
     }
 

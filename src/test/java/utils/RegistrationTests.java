@@ -4,8 +4,10 @@ import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import requestBuilder.UserRequestBuilder;
 
 import static org.hamcrest.Matchers.equalTo;
+import static requestBuilder.createTestimonialBuilder.testimonialId;
 
 public class RegistrationTests {
     static String firstName;
@@ -57,5 +59,35 @@ public class RegistrationTests {
                 .statusCode(200)
                 .body("success", equalTo(true));
 
+    }
+    @Test(priority = 5, dependsOnMethods = {"adminLoginTest"})
+    public void createTestimonialTest() {
+        requestBuilder.createTestimonialBuilder.createTestimonial("Cucumber 19 May", "Behavior Driven", 5, true)
+                .then().log().all();
+
+    }
+    @Test(priority = 6, dependsOnMethods = {"createTestimonialTest"})
+    public void updateTestimonialTest() {
+        requestBuilder.createTestimonialBuilder.updateTestimonial(
+                        "Updated Title2", "Updated testimonial content", 5)
+                .then().log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
+    @Test(priority = 7, dependsOnMethods = {"createTestimonialTest"})
+    public void deleteTestimonialTest() {
+        requestBuilder.createTestimonialBuilder.deleteTestimonial()
+                .then().log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
+    @Test(priority = 8)
+    public void getCoursesTest() {
+        requestBuilder.createTestimonialBuilder.getCourses("automation", "beginner")
+                .then().log().all()
+                .assertThat()
+                .statusCode(200);
     }
 }
